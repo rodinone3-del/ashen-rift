@@ -3,7 +3,7 @@
 **Піксельний ARPG у браузері в дусі Diablo та Dark Souls.**
 Табір мандрівників на межі загибелі, Розломи в пустоші та Страж Попелу, що спить на дні кожного з них.
 
-▶ **Грати:** `https://<ваш-логін>.github.io/ashen-rifts/`
+▶ **Грати:** `https://rodinone3-del.github.io/ashen-rift/`
 
 > **English:** A dark pixel-art browser ARPG inspired by Diablo and Dark Souls. Hold the last camp, rescue survivors, delve into procedurally generated rift dungeons and uncover the truth behind the Ash Guardian. Three classes, loot and item sets, quests, full mobile support. No install, no build: a single HTML file.
 
