@@ -20,18 +20,36 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Download & Setup Android SDK
+        run: |
+          # Встановлюємо робочі папки для Android SDK
+          export ANDROID_HOME=$HOME/android-sdk
+          mkdir -p $ANDROID_HOME/cmdline-tools
+          
+          # Завантажуємо актуальні command-line tools
+          wget -q https://dl.google.com/android/repository/commandline-tools-linux-11076708_latest.zip -O cmdtools.zip
+          unzip -q cmdtools.zip
+          mv cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+          rm cmdtools.zip
 
-      - name: Install Cordova & Build
+          # Додаємо шляхи в систему
+          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
+
+          # Приймаємо ліцензії та встановлюємо платформи без використання застарілих 'tools'
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Install Cordova & Build APK
         run: |
           npm install -g cordova
           cordova create build_app com.ashenrifts.game AshenRifts
           rm -rf build_app/www/*
-          cp -r index.html icon-512.png manifest.json build_app/www/
+          cp index.html manifest.json icon-512.png build_app/www/ 2>/dev/null || true
           cd build_app
-          cordova platform add android
-          cordova build android
+          cordova platform add android --nosave
+          cordova build android --debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
